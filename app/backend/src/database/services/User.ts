@@ -1,20 +1,12 @@
-// import MovieModel from "../models/movies";
-// import { Movie, MovieBody } from "../types";
+// import IUserServicesResponse from '../interfaces/UserInterfaces';
 
-// export default class MovieService {
-  // public movieModel = new MovieModel();
-  
-  // constructor(public movieModel = new MovieModel()){}
+// export default class UserServices {
 
-  // async listAll(): Promise<Movie[]> {
-  //   const movies: Movie[] = await this.movieModel.listAll();
+//   static validateEmail(value: string): RegExpMatchArray | IUserServicesResponse {
+//     const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+$/i;
+//     const result = value.match(regex);
+//     if (!result) return { code: 400, message: { message: 'All fields must be filled' } };
+//     return result;
+//   }
 
-  //   return movies;
-  // }
-
-  // async create(data: MovieBody) {
-  //   const movie = await this.movieModel.create(data);
-
-  //   return movie;
-  // }
 // }

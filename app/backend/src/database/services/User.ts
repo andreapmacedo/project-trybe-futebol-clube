@@ -1,20 +1,20 @@
-import MovieModel from "../models/movies";
-import { Movie, MovieBody } from "../types";
+// import MovieModel from "../models/movies";
+// import { Movie, MovieBody } from "../types";
 
-export default class MovieService {
-  public movieModel = new MovieModel();
+// export default class MovieService {
+  // public movieModel = new MovieModel();
   
   // constructor(public movieModel = new MovieModel()){}
 
-  async listAll(): Promise<Movie[]> {
-    const movies: Movie[] = await this.movieModel.listAll();
+  // async listAll(): Promise<Movie[]> {
+  //   const movies: Movie[] = await this.movieModel.listAll();
 
-    return movies;
-  }
+  //   return movies;
+  // }
 
-  async create(data: MovieBody) {
-    const movie = await this.movieModel.create(data);
+  // async create(data: MovieBody) {
+  //   const movie = await this.movieModel.create(data);
 
-    return movie;
-  }
-}
+  //   return movie;
+  // }
+// }

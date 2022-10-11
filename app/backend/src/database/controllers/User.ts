@@ -1,19 +1,24 @@
-// import { Request, Response } from "express";
-// import MovieService from "../services/movies";
-// import { Movie, MovieBody } from "../types";
+import { Request, Response } from "express";
+import User from "../models/User";
 
-// const movieService = new MovieService();
+// primeira implementação
+export default class UserController {
+  static async create(req: Request, res: Response) {
+    const newUser = await User.create(req.body);
+    return res.status(201).json(newUser);
+  }
 
-// export async function listAll(req: Request, res: Response) {
-//   const movies = await movieService.listAll();
-
-//   res.status(200).json(movies);
-// }
-
-// export async function createMovie(req: Request<unknown, unknown, MovieBody>, res: Response<Movie>) {
-//   const body = req.body;
-
-//   const movie = await movieService.create(body);
-
-//   return res.json(movie);
-// }
+  // public async login(req: Request, res: Response): Promise<Response> {
+  //   const { email, password } = req.body;
+  //   const user = await User.findOne({ where: { email } });
+  //   if (!user) {
+  //     return res.status(401).json({ message: 'Invalid email or password' });
+  //   }
+  //   const isValidPassword = await user.checkPassword(password);
+  //   if (!isValidPassword) {
+  //     return res.status(401).json({ message: 'Invalid email or password' });
+  //   }
+  //   const token = jwt.sign({ id: user.id }, 'secret', { expiresIn: '1d' });
+  //   return res.json({ user, token });
+  // }
+}

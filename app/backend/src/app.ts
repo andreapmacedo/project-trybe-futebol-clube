@@ -1,4 +1,5 @@
 import * as express from 'express';
+import UserController from './database/controllers/User';
 // import login from './routes/login.route';
 
 
@@ -12,6 +13,7 @@ class App {
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
+    
   }
 
   private config():void {
@@ -27,8 +29,17 @@ class App {
 
     // here    this.app.use((req, res, next) => {
     // this.app.use(login);
-
-
+    
+    // seu o uso do controller, apenas para verificar se o servidor está funcionando
+    this.app.post('/login', (req, res) => {
+      console.log(req.body);
+      res.status(201).send(req.body);
+    });
+    // com o uso do controller 
+    this.app.post('/login', (req, res) => {
+      UserController.create(req, res); // Esta implementação é possivel pois o método create é estático em UserController
+    });
+    
   }
 
   public start(PORT: string | number):void {

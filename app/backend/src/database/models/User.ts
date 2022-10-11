@@ -10,11 +10,6 @@ interface IUser {
   password: string;
 }
 
-// type IUserCreation = Omit<IUser, 'id'>;
-
-// type IUserReturned = Omit<IUser, 'password'>;
-
-// class User extends Model<IUser, IUserCreation> {
 class User extends Model<IUser> {
   id?: number;
   username: string;
@@ -46,11 +41,11 @@ User.init({
     type: STRING,
   },
 }, {
-  sequelize: db,
-  modelName: 'users',
-  timestamps: false,
+  sequelize: db, // db é ums instancia de sequelize (está no arquivo index.ts). O sequelize é o que vai fazer a conexão com o banco de dados.
+  modelName: 'users', // Nome da tabela.
+  underscored: true, // Se os campos da tabela serão separados por underline (caso seja camelCase, o sequelize vai entender que é um campo separado).
+  timestamps: false, // Se vai ter os campos de created_at e updated_at seria necessário colocar true.
 });
 
 export default User;
 export { IUser };
-// export { IUser, IUserCreation, IUserReturned };

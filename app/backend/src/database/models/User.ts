@@ -16,11 +16,11 @@ interface IUser {
 
 // class User extends Model<IUser, IUserCreation> {
 class User extends Model<IUser> {
-  declare id: number;
-  declare username: string;
-  declare role: string;
-  declare email: string;
-  declare password: string;
+  id?: number;
+  username: string;
+  role: string;
+  email: string;
+  password: string;
 }
 
 User.init({

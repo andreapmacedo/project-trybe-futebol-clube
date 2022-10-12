@@ -23,7 +23,9 @@ class UserServices {
     const tokenGenerator = new TokenGenerator();
     const token = tokenGenerator.generateJWTToken({email: body.email, password: body.password});
     // console.log(token);
-    return { token };
+    // return { token };
+    return { code: 200, message: { token } };
+    
   }
 }
 

@@ -33,8 +33,9 @@ class UserController {
 
   // public async create(req: Request<{}, {}, IUser>, res: Response) {
   public async getUser(req: Request<{}, {}, IUser>, res: Response) {
-    const token = await this.service.login(req.body);
-    return res.status(200).json(token);
+    const response = await this.service.login(req.body);
+    // return res.status(200).json(response);
+    return response
   }
 
   // public async update(req: Request<{ id: number }, {}, ICourse>, res: Response) {

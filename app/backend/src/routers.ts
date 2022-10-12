@@ -11,9 +11,12 @@ const routers: Router = Router();
 // const authController = new AuthController();
 // routers.post('/auth', (req: Request, res: Response) => authController.auth(req, res));
 
-const userController = new UserController();
 // routers.post('/login', (req: Request, res: Response) => userController.create(req, res));
-routers.post('/login', (req: Request, res: Response) => userController.getUser(req, res));
+routers.post('/login', async (req: Request, res: Response) => { 
+  const userController = new UserController();
+  const { code, message } = await userController.getUser(req, res)
+  res.status(code).json(message)
+})
 
 // const courseController = new CourseController();
 // routers.get('/course', authenticationMiddleware, (req: Request, res: Response) => courseController.getAll(req, res));

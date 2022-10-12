@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import User from "../models/User";
 
 // primeira implementação sem o uso do service
-export default class UserController {
+class UserController {
   static async create(req: Request, res: Response) {
     const newUser = await User.create(req.body);
     return res.status(201).json(newUser);
@@ -15,5 +15,6 @@ export default class UserController {
 //     return result;
 //   }
 
-
 }
+
+export default UserController;

@@ -16,14 +16,6 @@ class App {
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
-
-    // this.app.post('/login', (req, res) => {
-    //   const userController = new UserController();
-    //   // UserController.create(req, res); // Esta implementação é possivel pois o método create é estático em UserController
-    //   userController.create(req, res); // Esta implementação é possivel pois o método create é estático em UserController
-    // });
-    
-
   }
 
   private config():void {

@@ -6,10 +6,37 @@ import TokenGenerator from '../../shared/TokenGenerator';
 import BcryptService from './utils/BcriptService';
 
 class UserServices {
+
+
+  validateEmail(value: string) {
+    const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+$/i;
+    const result = value.match(regex);
+    // if (!result) return { code: 400, message: { message: 'All fields must be filled' } };
+    return result;
+  }
+
+  validatePassword(value: string) {
+    if (value.length > 6) return true;
+    return false;
+    // return { code: 400, message: { message: 'All fields must be filled' } };
+  }
+
+
+
   async login(body: IUser) {
     
+
+    const validatedEmail = this.validateEmail(body.email);
+    if (!validatedEmail) return { code: 400, message: { message: 'All fields must be filled' } };
+    
+
+    const validatedPassword = this.validatePassword(body.password);
+    if (!validatedPassword) return { code: 400, message: { message: 'All fields must be filled' } };
+
+
     const data = await User.findOne({
-      where: { email: body.email },
+      // where: { email: body.email },
+      where: { email: validatedEmail },
     })
   
     if (!data) return { code: 401, message: { message: 'Incorrect email or password' } };

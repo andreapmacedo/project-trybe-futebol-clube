@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { IUser } from "../interfaces/User.interface";
+import { IUser, IUserCreate } from "../interfaces/User.interface";
 import UserServices from "../services/UserService";
 
 // primeira implementação sem o uso do service
@@ -26,10 +26,6 @@ class UserController {
     this.service = new UserServices();
   }
 
-  // public async getAll(req: Request, res: Response) {
-  //   const courses = await this.service.getCourses();
-  //   return res.status(200).json(courses);
-  // }
 
   // public async create(req: Request<{}, {}, IUser>, res: Response) {
   public async getUser(req: Request<{}, {}, IUser>, res: Response) {
@@ -37,23 +33,10 @@ class UserController {
     // return res.status(200).json(response);
     return response
   }
-
-  // public async update(req: Request<{ id: number }, {}, ICourse>, res: Response) {
-  //   const { id } = req.params;
-  //   const isUpdated = await this.service.updateCourse(id, req.body);
-  //   if (isUpdated) {
-  //     return res.status(200).json({ message: `Curso ${id} atualizado com sucesso` });
-  //   }
-  //   res.status(404).json({ message: `Curso ${id} não alterado.` });
-  // }
-
-  // public async remove(req: Request<{ id: number }>, res: Response) {
-  //   const { id } = req.params;
-  //   const isRemoved = await this.service.removeCourse(id);
-  //   if (isRemoved) {
-  //     return res.status(200).json({ message: `Curso ${id} removido com sucesso` });
-  //   }
-  //   res.status(404).json({ message: `Curso ${id} não removido` });
+  
+  // public async getRole(req: Request<{}, {}, IUserCreate>, res: Response) {
+  //   const response = await this.service.login(req.body);
+  //   return response
   // }
 }
 

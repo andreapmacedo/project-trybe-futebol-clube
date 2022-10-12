@@ -1,17 +1,19 @@
 // import * as Sequelize from 'sequelize';
 import { INTEGER, STRING, Model } from 'sequelize';
 import db from '.';
+// import { IUser } from '../interfaces/User.interface';
 // import IUser from './entities/IUser';
 
-interface IUser {
-  id: number;
-  username: string;
-  role: string;
-  email: string;
-  password: string;
-}
+// interface IUser {
+//   id: number;
+//   username: string;
+//   role: string;
+//   email: string;
+//   password: string;
+// }
 
-class User extends Model<IUser> {
+// class User extends Model<IUser> {
+class User extends Model {
   id?: number;
   username: string;
   role: string;
@@ -28,11 +30,11 @@ User.init({
   },
   username: {
     type: STRING,
-    allowNull: false,
+    allowNull: true,
   },
   role: {
     type: STRING,
-    allowNull: false,
+    allowNull: true,
   },
   email: {
     type: STRING,
@@ -49,4 +51,4 @@ User.init({
 });
 
 export default User;
-export { IUser };
+// export { IUser };

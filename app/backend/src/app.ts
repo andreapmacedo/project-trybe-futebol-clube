@@ -1,6 +1,9 @@
 import * as express from 'express';
-import UserController from './database/controllers/User';
+import UserController from './database/controllers/UserController';
+
+import errorMiddleware from './middlewares/http.error.middleware'
 // import login from './routes/login.route';
+import routers from './routers';
 
 
 class App {
@@ -13,7 +16,14 @@ class App {
 
     // Não remover essa rota
     this.app.get('/', (req, res) => res.json({ ok: true }));
+
+    // this.app.post('/login', (req, res) => {
+    //   const userController = new UserController();
+    //   // UserController.create(req, res); // Esta implementação é possivel pois o método create é estático em UserController
+    //   userController.create(req, res); // Esta implementação é possivel pois o método create é estático em UserController
+    // });
     
+
   }
 
   private config():void {
@@ -27,18 +37,29 @@ class App {
     this.app.use(express.json());
     this.app.use(accessControl);
 
+    this.app.use(routers);
+    // this.app.use(errorMiddleware);
     // here    this.app.use((req, res, next) => {
     // this.app.use(login);
     
     // seu o uso do controller, apenas para verificar se o servidor está funcionando
-    this.app.post('/login', (req, res) => {
-      console.log(req.body);
-      res.status(201).send(req.body);
-    });
-    // com o uso do controller 
-    this.app.post('/login', (req, res) => {
-      UserController.create(req, res); // Esta implementação é possivel pois o método create é estático em UserController
-    });
+    // this.app.post('/login', (req, res) => {
+    //   console.log(req.body);
+    //   res.status(201).send(req.body);
+    // });
+
+    // // com o uso do controller 
+    // this.app.post('/login', (req, res) => {
+    //   UserController.create(req, res); // Esta implementação é possivel pois o método create é estático em UserController
+    // });
+    
+
+    // com o uso do controller  2
+    // this.app.post('/login', (req, res) => {
+    //   const userController = new UserController();
+    //   // UserController.create(req, res); // Esta implementação é possivel pois o método create é estático em UserController
+    //   userController.create(req, res); // Esta implementação é possivel pois o método create é estático em UserController
+    // });
     
   }
 

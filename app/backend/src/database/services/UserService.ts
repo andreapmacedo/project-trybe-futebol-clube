@@ -20,10 +20,14 @@ class UserServices {
 
   async login(body: IUser) {
     
-    // if(!body) return { code: 400, message: { message: 'All fields must be filled' } }
+    if(!body.password && !body.email) return { code: 400, message: { message: 'All fields must be filled' } }
 
-    if(!body.email || !body.password) {
-      return { code: 400, message: { message: 'All fields must be filled' } }
+    if(!body.password) {
+      return { code: 400, message: { message: '"password" is required'}  }
+    }
+
+    if(!body.email) {
+      return { code: 400, message: { message: '"email" is required'}}
     }
 
     const validatedEmail = this.validateEmail(body.email);

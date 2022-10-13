@@ -26,18 +26,15 @@ class UserController {
     this.service = new UserServices();
   }
 
-  // public async create(req: Request<{}, {}, IUser>, res: Response) {
   public async getUser(req: Request<{}, {}, IUser>, res: Response) {
-    const response = await this.service.login(req.body);
-    // return res.status(200).json(response);
+    const response = await this.service.login(req.body);    
     return response
   }
   
-  public async getRole(id: number) {
-    const response = await this.service.getRole(id);
+  public async getRole(email: string) {   
+    const response = await this.service.getRole(email);
     return response
   }
-
 
 }
 

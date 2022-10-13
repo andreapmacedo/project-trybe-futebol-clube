@@ -48,16 +48,19 @@ class UserServices {
     return { code: 200, message: { token } }; 
   }
 
-  async getRole(id: number)  {
-    console.log(id);
-    if(!id){
-      console.log('id não encontrado');
-      
-      return { code: 400, message:  'id invalido'  }; 
-    }
-    const { role } = await User.findByPk(id) as User;
-    return { code: 200, message: { role } }; 
-    // return { code: 200, message:  'teste'  }; 
+  async getRole(email: string)  {
+    
+    const data = await User.findOne({
+      // where: { email: body.email },
+      where: { email: email },
+    })
+        
+    // console.log(data);
+    // console.log(data?.role);
+    // const { role } = data?.role as any;
+    
+    return { code: 200, message: { "role": data?.role as string  } }; 
+    
 
   }
 }

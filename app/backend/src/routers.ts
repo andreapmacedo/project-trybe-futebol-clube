@@ -23,8 +23,11 @@ routers.post('/login', async (req: Request, res: Response) => {
 
 // routers.get('/login/validate', async (req, res) => {
 routers.get('/login/validate', authenticationMiddleware, async (req, res) => {
-  const { id } = req.body;
-  const { code, message } = await userController.getRole(id);
+  // console.log(res.locals.payload);
+  const { email } = res.locals.payload;
+  // console.log(email);
+  const { code, message } = await userController.getRole(email);
+  console.log(message);
   res.status(code).json(message);
 });
 

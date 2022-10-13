@@ -7,6 +7,8 @@ const authenticationMiddleware = async (req: Request, res: Response, next: NextF
   const tokenGenerator = new TokenGenerator();
   const payload = await tokenGenerator.authenticateToken(token);
 
+  // console.log('payload', payload);
+  
   res.locals.payload = payload;
 
   next();

@@ -139,7 +139,6 @@ describe('/login', () => {
         chai.expect(resp.body).to.deep.equal({ message: 'All fields must be filled'});
       })
     })
-    
   });
 
   describe.skip('GET', () => {

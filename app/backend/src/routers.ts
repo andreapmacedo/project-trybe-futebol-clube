@@ -23,15 +23,9 @@ routers.post('/login', async (req: Request, res: Response) => {
 
 // routers.get('/login/validate', async (req, res) => {
 routers.get('/login/validate', authenticationMiddleware, async (req, res) => {
-  // const { email } = req.body.role;
   const { id } = req.body;
   const { code, message } = await userController.getRole(id);
   res.status(code).json(message);
-
-  // res.status(200).json(role);
-  // res.status(200).json('ok');
-
-
 });
 
 

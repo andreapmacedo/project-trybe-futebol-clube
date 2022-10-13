@@ -51,12 +51,8 @@ class UserServices {
   async getRole(id: number)  {
     console.log(id);
     const { role } = await User.findByPk(id) as User;
-    return { code: 200, message: { role } };
-    
+    return { code: 200, message: { role } }; 
   }
 }
-
-
-
 
 export default UserServices;

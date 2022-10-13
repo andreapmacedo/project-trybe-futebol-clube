@@ -26,7 +26,6 @@ class UserController {
     this.service = new UserServices();
   }
 
-
   // public async create(req: Request<{}, {}, IUser>, res: Response) {
   public async getUser(req: Request<{}, {}, IUser>, res: Response) {
     const response = await this.service.login(req.body);

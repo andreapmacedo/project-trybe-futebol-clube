@@ -49,9 +49,16 @@ class UserServices {
   }
 
   async getRole(id: number)  {
-    // console.log(id);
+    console.log(id);
+    if(!id){
+      console.log('id não encontrado');
+      
+      return { code: 400, message:  'id invalido'  }; 
+    }
     const { role } = await User.findByPk(id) as User;
     return { code: 200, message: { role } }; 
+    // return { code: 200, message:  'teste'  }; 
+
   }
 }
 

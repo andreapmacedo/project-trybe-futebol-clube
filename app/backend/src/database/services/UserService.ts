@@ -22,11 +22,9 @@ class UserServices {
     
     const validatedEmail = this.validateEmail(body.email);
     if (!validatedEmail) return { code: 400, message: { message: 'All fields must be filled' } };
-    
-
+      
     const validatedPassword = this.validatePassword(body.password);
     if (!validatedPassword) return { code: 400, message: { message: 'All fields must be filled' } };
-
 
     const data = await User.findOne({
       // where: { email: body.email },
@@ -43,15 +41,12 @@ class UserServices {
     }
     const tokenGenerator = new TokenGenerator();
     const token = tokenGenerator.generateJWTToken({email: body.email, password: body.password});
-    // console.log(token);
-    // return { token };
     return { code: 200, message: { token } }; 
   }
 
   async getRole(email: string)  {
     
     const data = await User.findOne({
-      // where: { email: body.email },
       where: { email: email },
     })
         
@@ -60,8 +55,6 @@ class UserServices {
     // const { role } = data?.role as any;
     
     return { code: 200, message: { "role": data?.role as string  } }; 
-    
-
   }
 }
 

@@ -17,35 +17,19 @@ const userController = new UserController();
 
 
 routers.post('/login', async (req: Request, res: Response) => { 
-  const { code, message } = await userController.getUser(req, res)
+  const { code, message } = await userController.login(req, res)
   res.status(code).json(message)
 })
 
 // routers.get('/login/validate', async (req, res) => {
-routers.get('/login/validate', authenticationMiddleware, async (req, res) => {
+routers.get('/login/validate', authenticationMiddleware, async (_req, res: Response) => {
   // console.log(res.locals.payload);
   const { email } = res.locals.payload;
   // console.log(email);
   const { code, message } = await userController.getRole(email);
-  console.log(message);
+  // console.log(message);
   res.status(code).json(message);
 });
 
-
-// routers.get('/login/validate', async (req: Request, res: Response) => {
-//   const { code, message } = await UserController.getRole(req, res);
-//   res.status(code).json(message);
-// });
-
-// const courseController = new CourseController();
-// routers.get('/course', authenticationMiddleware, (req: Request, res: Response) => courseController.getAll(req, res));
-// routers.post('/course', (req: Request, res: Response) => courseController.create(req, res));
-// routers.put('/course/:id', (req: Request<{ id: number }, {}, ICourse>, res: Response) => courseController.update(req, res));
-// routers.delete('/course/:id', (req: Request<{ id: number }>, res: Response) => courseController.remove(req, res));
-
-// const studentController = new StudentController();
-// routers.get('/student', (req: Request, res: Response) => studentController.getAll(req, res));
-// routers.post('/student', (req: Request, res: Response) => studentController.create(req, res));
-// routers.get('/student/:id', (req: Request<{ id: number }, {}, {}, { includeCourse: boolean }>, res: Response) => studentController.getOne(req, res));
 
 export default routers;

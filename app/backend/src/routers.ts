@@ -1,5 +1,7 @@
 import { Router, Request, Response } from 'express';
 import UserController from './database/controllers/UserController';
+import authenticationMiddleware from './middlewares/auth.middleware';
+
 // import CourseController from './controllers/CourseController';
 // import StudentController from './controllers/StudentController';
 // import AuthController from './controllers/AuthController';
@@ -13,10 +15,25 @@ const routers: Router = Router();
 // routers.post('/login', (req: Request, res: Response) => userController.create(req, res));
 const userController = new UserController();
 
+
 routers.post('/login', async (req: Request, res: Response) => { 
   const { code, message } = await userController.getUser(req, res)
   res.status(code).json(message)
 })
+
+// routers.get('/login/validate', async (req, res) => {
+routers.get('/login/validate', authenticationMiddleware, async (req, res) => {
+  // const { email } = req.body.role;
+  const { id } = req.body;
+  const { code, message } = await userController.getRole(id);
+  res.status(code).json(message);
+
+  // res.status(200).json(role);
+  // res.status(200).json('ok');
+
+
+});
+
 
 // routers.get('/login/validate', async (req: Request, res: Response) => {
 //   const { code, message } = await UserController.getRole(req, res);

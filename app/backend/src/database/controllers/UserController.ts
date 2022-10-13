@@ -34,10 +34,12 @@ class UserController {
     return response
   }
   
-  // public async getRole(req: Request<{}, {}, IUserCreate>, res: Response) {
-  //   const response = await this.service.login(req.body);
-  //   return response
-  // }
+  public async getRole(id: number) {
+    const response = await this.service.getRole(id);
+    return response
+  }
+
+
 }
 
 export default UserController;

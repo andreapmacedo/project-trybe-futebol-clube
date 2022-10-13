@@ -43,16 +43,42 @@ describe('/login', () => {
     //     chai.expect(res.body).to.deep.equal(loginMock);
     //   })
     // });
-  
-    describe.skip('Teste em caso de usuário encontrado', () => {
-      before(() => {
-        Sinon.stub(User, 'findOne').resolves(loginMock as User);
-      })
 
-      after(() => {
-        // (User.findOne as Sinon.SinonStub).restore();
-        Sinon.restore();
-      })
+    // before(() => {
+    //   Sinon.stub(User, 'findOne').resolves(loginMock as User);
+    // })
+
+    // after(() => {
+    //   // (User.findOne as Sinon.SinonStub).restore();
+    //   Sinon.restore();
+    // })
+
+    describe('Teste em caso de usuário encontrado', () => {
+      it('permita o acesso com dados válidos', async () => {
+        const resp = await chai.request(app)
+        .post('/login')
+        // .send({
+        //   email: 'user@user.com',
+        //   password: 'secret_user'
+        // });
+        .send(loginMock);
+        chai.expect(resp.status).to.be.eq(200);
+        chai.expect(resp.body.token).to.be.an('string')
+      });
+    });
+
+
+  
+    // describe.skip('Teste em caso de usuário encontrado', () => {
+    describe('Teste em caso de usuário encontrado', () => {
+      // before(() => {
+      //   Sinon.stub(User, 'findOne').resolves(loginMock as User);
+      // })
+
+      // after(() => {
+      //   // (User.findOne as Sinon.SinonStub).restore();
+      //   Sinon.restore();
+      // })
 
       it('Email e password corretos, retorna status 200 e token', async () => {
         const resp = await chai.request(app)
@@ -116,17 +142,17 @@ describe('/login', () => {
     
   });
 
-  describe('GET', () => {
-    before(() => {
-      Sinon.stub(User, 'findOne').resolves({
-        role: 'admin',
-      } as User)
-    })
+  describe.skip('GET', () => {
+    // before(() => {
+    //   Sinon.stub(User, 'findOne').resolves({
+    //     role: 'admin',
+    //   } as User)
+    // })
 
-    after(() => {
-      // (User.findOne as Sinon.SinonStub).restore();
-      Sinon.restore();
-    })
+    // after(() => {
+    //   // (User.findOne as Sinon.SinonStub).restore();
+    //   Sinon.restore();
+    // })
 
     it('Verifica se retorna o status de retorno da requisição é 200 e se contém a propriedade role', async () => {
       const resp = await chai.request(app)

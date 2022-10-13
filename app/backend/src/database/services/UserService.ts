@@ -9,14 +9,14 @@ class UserServices {
   validateEmail(value: string) {
     const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+$/i;
     const result = value.match(regex);
-    return result;
+    if( result ) return true;
+    return { code: 400, message: { message: 'All fields must be filled' } };
   }
 
   validatePassword(value: string) {
     if (value.length > 6) return true;
-    return false;
+    return { code: 400, message: { message: 'All fields must be filled' } };
   }
-
 
   async login(body: IUser) {
     
@@ -31,14 +31,20 @@ class UserServices {
     }
 
     const validatedEmail = this.validateEmail(body.email);
-    if (!validatedEmail) return { code: 400, message: { message: 'All fields must be filled' } };
+    if (!validatedEmail) return validatedEmail
       
     const validatedPassword = this.validatePassword(body.password);
-    if (!validatedPassword) return { code: 400, message: { message: 'All fields must be filled' } };
+    if (!validatedPassword) return validatedPassword
+
+    // const validatedEmail = this.validateEmail(body.email);
+    // if (!validatedEmail) return { code: 400, message: { message: 'All fields must be filled' } };
+      
+    // const validatedPassword = this.validatePassword(body.password);
+    // if (!validatedPassword) return { code: 400, message: { message: 'All fields must be filled' } };
 
     const data = await User.findOne({
-      // where: { email: body.email },
-      where: { email: validatedEmail },
+      where: { email: body.email },
+      // where: { email: validatedEmail },
     })
   
     if (!data) return { code: 401, message: { message: 'Incorrect email or password' } };

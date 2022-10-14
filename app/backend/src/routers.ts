@@ -35,45 +35,29 @@ routers.get('/teams', async (req: Request, res: Response) => {
 })
 
 routers.get('/teams/:id', async (req: Request, res: Response) => {
-  // res.status(200).send({ message: 'ok' });
   const { id } = req.params;
   const { code, message } = await teamController.getTeam(id);
   res.status(code).json(message)
 });
 
-
-// routers.get('/matches', async (req: Request, res: Response) => { 
-//   // res.status(200).send({ message: 'ok' });
-//   const { code, message } = await matchController.getMatches();
-//   res.status(code).json(message)
-// })
-
-
 routers.get('/', async (req: Request, res: Response) => {
   const { inProgress } = req.query; 
-  // const { code, message } = await matchController.getMatches(req, res);
-// routers.get('/', async () => {
   const { code, message } = await matchController.getMatches(inProgress);
   res.status(code).json(message)
 });
 
+routers.patch('/:id/finish', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { code, message } = await matchController.finishMatch(id);
+  res.status(code).json(message)
+});
 
-// routers.patch('/:id/finish', (req, res) => matchController.updateMatchProgress(req, res));
-// routers.patch('/:id', (req, res) => matchController.updateMatch(req, res));
-// routers.post('/',
-//   (req, res, next) => auth.verify(req as NewRequest, res, next),
-//   (req, res) => matchController.create(req, res),
-// );
-
-
-
-// matchRoute.patch('/:id/finish', (req, res) => matchController.updateMatchProgress(req, res));
-// matchRoute.patch('/:id', (req, res) => matchController.updateMatch(req, res));
-// matchRoute.post(
-//   '/',
-//   (req, res, next) => auth.verify(req as NewRequest, res, next),
-//   (req, res) => matchController.create(req, res),
-// );
+routers.patch('/:id', async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { homeTeamGoals, awayTeamGoals } = req.body;
+  const { code, message } = await matchController.updateMatch(id, homeTeamGoals, awayTeamGoals);
+  res.status(code).json(message)
+});
 
 export default routers;
 

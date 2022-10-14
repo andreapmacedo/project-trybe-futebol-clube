@@ -58,6 +58,19 @@ class MatchService {
   }
 
 
+  public async finishMatch(id: string) {
+    await this._matches.update({ inProgress: 0 }, { where: { id } });
+    return { code: 200,  message: 'Finished'  };
+  }
+
+  public async updateMatch(id: string, homeTeamGoals: string, awayTeamGoals: string) {
+    await this._matches.update({homeTeamGoals, awayTeamGoals}, { where: { id } });
+    return { code: 200,  message: 'Updated'  };
+  }
+
+
+
+
 }
 
 export default MatchService;

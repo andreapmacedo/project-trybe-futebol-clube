@@ -4,7 +4,7 @@ import Teams from "../models/Teams";
 
 class TeamService {
 
-//TODO: falta tipar o retorno
+  //TODO: falta tipar o retorno
   async getTeams () {
     const data = await Teams.findAll();
     return { code: 200, message: data  };

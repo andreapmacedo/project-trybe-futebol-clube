@@ -1,21 +1,17 @@
 import { Router, Request, Response } from 'express';
 import UserController from './database/controllers/UserController';
 import TeamController from './database/controllers/TeamController';
+import MatchController from './database/controllers/MatchController';
 import authenticationMiddleware from './middlewares/auth.middleware';
 
-// import CourseController from './controllers/CourseController';
-// import StudentController from './controllers/StudentController';
-// import AuthController from './controllers/AuthController';
-// import { ICourse } from './interfaces/Course.interface';
-// import authenticationMiddleware from './middlewares/auth.middleware';
+
 
 const routers: Router = Router();
 
-// const authController = new AuthController();
-// routers.post('/auth', (req: Request, res: Response) => authController.auth(req, res));
-// routers.post('/login', (req: Request, res: Response) => userController.create(req, res));
+
 const userController = new UserController();
 const teamController = new TeamController();
+const matchController = new MatchController();
 
 
 routers.post('/login', async (req: Request, res: Response) => { 
@@ -33,8 +29,6 @@ routers.get('/login/validate', authenticationMiddleware, async (_req, res: Respo
   res.status(code).json(message);
 });
 
-
-
 routers.get('/teams', async (req: Request, res: Response) => { 
   // res.status(200).send({ message: 'ok' });
   const { code, message } = await teamController.getTeams();
@@ -47,5 +41,12 @@ routers.get('/teams/:id', async (req: Request, res: Response) => {
   const { code, message } = await teamController.getTeam(id);
   res.status(code).json(message)
 });
+
+
+routers.get('/matches', async (req: Request, res: Response) => { 
+  // res.status(200).send({ message: 'ok' });
+  const { code, message } = await matchController.getMatches();
+  res.status(code).json(message)
+})
 
 export default routers;

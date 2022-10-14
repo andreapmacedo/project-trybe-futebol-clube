@@ -13,10 +13,6 @@ const userController = new UserController();
 const teamController = new TeamController();
 const matchController = new MatchController();
 
-interface Query {
-  inProgress: string;
-}
-
 routers.post('/login', async (req: Request, res: Response) => { 
   const { code, message } = await userController.login(req, res)
   res.status(code).json(message)
@@ -60,6 +56,16 @@ routers.get('/', async (req: Request, res: Response) => {
   const { code, message } = await matchController.getMatches(inProgress);
   res.status(code).json(message)
 });
+
+
+// routers.patch('/:id/finish', (req, res) => matchController.updateMatchProgress(req, res));
+// routers.patch('/:id', (req, res) => matchController.updateMatch(req, res));
+// routers.post('/',
+//   (req, res, next) => auth.verify(req as NewRequest, res, next),
+//   (req, res) => matchController.create(req, res),
+// );
+
+
 
 // matchRoute.patch('/:id/finish', (req, res) => matchController.updateMatchProgress(req, res));
 // matchRoute.patch('/:id', (req, res) => matchController.updateMatch(req, res));

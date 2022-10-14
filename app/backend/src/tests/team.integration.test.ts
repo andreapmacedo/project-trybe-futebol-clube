@@ -22,6 +22,13 @@ const teamsMock = [
   }
 ]
  
+
+const teamMock = {
+  "id": 1,
+  "teamName": 'Avaí/Kindermann'
+}
+
+
 describe('/teams', () => {
   describe('GET', () => {
 
@@ -34,7 +41,7 @@ describe('/teams', () => {
     })
 
 
-    describe.only('Teste se é possível consultar times', () => {
+    describe('Teste se é possível consultar times', () => {
       it('Verifica se a requisição retorna com status 200 e exibe uma lista de times.', async () => {
         const resp = await chai.request(app)
         .get('/teams')
@@ -56,5 +63,32 @@ describe('/teams', () => {
   
   
   
+  });
+});
+
+describe('/teams/:id', () => {
+  describe('GET', () => {
+
+    before(() => {
+      Sinon.stub(Teams, 'findByPk').resolves(teamMock as Teams);
+    })
+
+    after(() => {
+      (Teams.findByPk as Sinon.SinonStub).restore();
+    })
+
+
+    describe('Teste se é possível pesquisar por um time', () => {
+      it('Verifica se a requisição retorna com status 200 e exibe um time.', async () => {
+        const resp = await chai.request(app)
+        .get('/teams/:id')
+        // .send(teamsMock);
+        chai.expect(resp.status).to.be.equal(200);
+        chai.expect(resp.body).to.be.an('object')
+        chai.expect(resp.body).to.deep.equal(teamMock);
+      });
+       
+    });
+
   });
 });

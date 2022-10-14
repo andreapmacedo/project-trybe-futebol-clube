@@ -109,25 +109,36 @@ describe('/login', () => {
         chai.expect(resp.status).to.be.equal(401);
         chai.expect(resp.body).to.deep.equal({ message: 'Incorrect email or password'});
       })
+
+      it('Verifica lançamento de erro, caso password incorreto', async () => {
+        const resp = await chai.request(app)
+        .post('/login')
+        .send({ email: 'admin@admin.com', password: 'secrett_admin'});
+
+        chai.expect(resp.status).to.be.equal(401);
+        chai.expect(resp.body).to.deep.equal({ message: 'Incorrect email or password'});
+      })
     })
 
     describe('Verifica se o corpo da requisição é válido', () => {
-      it.skip('lançamento de erro caso não seja passado email', async () => {
+      it('Lançamento de erro caso não seja passado email', async () => {
         const resp = await chai.request(app)
         .post('/login')
         .send({ password: 'secret_admin' });
 
         chai.expect(resp.status).to.be.equal(400);
-        chai.expect(resp.body).to.deep.equal({ message: '"email" is required'});
+        // chai.expect(resp.body).to.deep.equal({ message: '"email" is required'});
+        chai.expect(resp.body).to.deep.equal({ message: 'All fields must be filled'});
       })
 
-      it.skip('Caso haja um erro no email, verifica se é lançado um erro', async () => {
+      it('Caso haja um erro no email, verifica se é lançado um erro', async () => {
         const resp = await chai.request(app)
         .post('/login')
         .send({ email: 'admin@admin.com' });
 
         chai.expect(resp.status).to.be.equal(400);
-        chai.expect(resp.body).to.deep.equal({ message: '"password" is required'});
+        chai.expect(resp.body).to.deep.equal({ message: 'All fields must be filled'});
+        // chai.expect(resp.body).to.deep.equal({ message: '"password" is required'});
       })
 
       it('Caso password e/ou email estiverem vazios, verifica se é lançado um erro', async () => {

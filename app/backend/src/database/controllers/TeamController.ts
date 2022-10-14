@@ -14,6 +14,11 @@ class TeamController {
     return response
   }
 
+  public async getTeam(id: string) {
+    const response = await this.service.getTeam(id);    
+    return response
+  }
+
 }
 
 export default TeamController;

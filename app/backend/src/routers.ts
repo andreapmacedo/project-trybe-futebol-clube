@@ -37,12 +37,15 @@ routers.get('/login/validate', authenticationMiddleware, async (_req, res: Respo
 
 routers.get('/teams', async (req: Request, res: Response) => { 
   // res.status(200).send({ message: 'ok' });
-  
   const { code, message } = await teamController.getTeams();
-  // console.log(code, message);
-  
   res.status(code).json(message)
 })
 
+routers.get('/teams/:id', async (req: Request, res: Response) => {
+  // res.status(200).send({ message: 'ok' });
+  const { id } = req.params;
+  const { code, message } = await teamController.getTeam(id);
+  res.status(code).json(message)
+});
 
 export default routers;

@@ -2,28 +2,16 @@ import * as chai from 'chai';
 // @ts-ignore
 import chaiHttp = require('chai-http');
 import * as Sinon from 'sinon';
-// import app from '../src/app';
 import { app } from '../app';
 import User from '../database/models/User';
 
-
 chai.use(chaiHttp);
-
-
-// const loginMock = {
-//   "email": "admin@admin.com",
-//   "password": "$2a$08$xi.Hxk1czAO0nZR..B393u10aED0RQ1N3PAEXQ7HxtLjKPEZBu.PW"
-// }
 
 const loginMock = {
   "email": "user@user.com",
   "password": "secret_user"
 }
-  
-  
-
-
-
+ 
 describe('/login', () => {
   describe('POST', () => {
     // describe('Caso usuário encontrado', () => {
@@ -57,19 +45,12 @@ describe('/login', () => {
       it('permita o acesso com dados válidos', async () => {
         const resp = await chai.request(app)
         .post('/login')
-        // .send({
-        //   email: 'user@user.com',
-        //   password: 'secret_user'
-        // });
         .send(loginMock);
         chai.expect(resp.status).to.be.eq(200);
         chai.expect(resp.body.token).to.be.an('string')
       });
     });
 
-
-  
-    // describe.skip('Teste em caso de usuário encontrado', () => {
     describe('Teste em caso de usuário encontrado', () => {
       // before(() => {
       //   Sinon.stub(User, 'findOne').resolves(loginMock as User);
@@ -87,7 +68,6 @@ describe('/login', () => {
         // .send({ email: 'admin@admin.com', password: 'secret_admin'});
 
         chai.expect(resp.status).to.equal(200);
-        // chai.expect(resp.body).to.deep.equal(loginMock);
         chai.expect(resp.body).to.have.property('token');
       })
     })
@@ -127,7 +107,6 @@ describe('/login', () => {
         .send({ password: 'secret_admin' });
 
         chai.expect(resp.status).to.be.equal(400);
-        // chai.expect(resp.body).to.deep.equal({ message: '"email" is required'});
         chai.expect(resp.body).to.deep.equal({ message: 'All fields must be filled'});
       })
 
@@ -138,7 +117,6 @@ describe('/login', () => {
 
         chai.expect(resp.status).to.be.equal(400);
         chai.expect(resp.body).to.deep.equal({ message: 'All fields must be filled'});
-        // chai.expect(resp.body).to.deep.equal({ message: '"password" is required'});
       })
 
       it('Caso password e/ou email estiverem vazios, verifica se é lançado um erro', async () => {

@@ -82,11 +82,14 @@ class MatchService {
     const {
       homeTeam,
       awayTeam,
-      homeTeamGoals,
-      awayTeamGoals,
-      inProgress,
+      // homeTeamGoals,
+      // awayTeamGoals,
+      // inProgress,
     } = body;   
     // console.log('body', body);
+    
+    // console.log('homeTeam', homeTeam);
+    // console.log('awayTeam', awayTeam);
     
     if (homeTeam === awayTeam) {
       return { code: 401, message: 'It is not possible to create a match with two equal teams' };

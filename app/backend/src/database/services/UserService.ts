@@ -1,7 +1,7 @@
 // import sequelize from '../models';
 import User from '../models/User';
 import { IUser, IUserCreate } from '../interfaces/User.interface';
-import TokenGenerator from '../../shared/TokenGenerator';
+import Token from '../../shared/TokenGenerator';
 import BcryptService from './utils/BcriptService';
 
 class UserServices {
@@ -58,7 +58,7 @@ class UserServices {
       return { code: 401, message: { message: 'Incorrect email or password' } };
     }
     
-    const tokenGenerator = new TokenGenerator();
+    const tokenGenerator = new Token();
     const token = tokenGenerator.generateJWTToken({email: body.email, password: body.password});
     return { code: 200, message: { token } }; 
   }

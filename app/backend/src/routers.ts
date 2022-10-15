@@ -49,13 +49,15 @@ routers.get('/matches', async (req: Request, res: Response) => {
 
 routers.post('/matches', authenticationMiddleware, async (req: Request, res: Response) => {
   const { code, message } = await matchController.createMatch(req.body);
+  console.log(message);
+  
   res.status(code).json(message)
 });
 
 routers.patch('/matches/:id/finish', authenticationMiddleware, async (req: Request, res: Response) => {
   const { id } = req.params;
   const { code, message } = await matchController.finishMatch(id); 
-  console.log("message", message);
+  // console.log("message", message);
   res.status(code).json(message)
 });
 

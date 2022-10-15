@@ -1,3 +1,4 @@
+import { IMatch } from "../interfaces/matche.interface";
 import Matches from "../models/Matches";
 import Teams from "../models/Teams";
 // import { ITeam } from "../interfaces/Team.interface";
@@ -80,6 +81,20 @@ class MatchService {
   }
 
 
+  public async createMatch(body : IMatch) {
+    // const {
+    //   homeTeam,
+    //   awayTeam,
+    //   homeTeamGoals,
+    //   awayTeamGoals,
+    //   inProgress,
+    // } = body;   
+    console.log('body', body);
+    
+    const response = await this._matches.create(body);
+    return { code: 201, message: response };
+  }
+
   public async finishMatch(id: string) {
     await this._matches.update({ inProgress: 0 }, { where: { id } });
     return { code: 200,  message: 'Finished'  };
@@ -89,9 +104,6 @@ class MatchService {
     await this._matches.update({homeTeamGoals, awayTeamGoals}, { where: { id } });
     return { code: 200,  message: 'Updated'  };
   }
-
-
-
 
 }
 

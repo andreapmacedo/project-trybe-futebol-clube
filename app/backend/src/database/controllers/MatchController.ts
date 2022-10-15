@@ -18,6 +18,14 @@ class MatchController {
       return response
   }
 
+
+
+  public async createMatch(body: IMatch) {
+
+    const response = await this.service.createMatch(body);    
+    return response
+  }
+
   public async finishMatch(id: string) {
     const response = await this.service.finishMatch(id);    
     return response

@@ -2,8 +2,7 @@ import { Router, Request, Response } from 'express';
 import UserController from './database/controllers/UserController';
 import TeamController from './database/controllers/TeamController';
 import MatchController from './database/controllers/MatchController';
-import authenticationMiddleware from './middlewares/auth.middleware';
-
+import Token from './shared/TokenGenerator';
 
 
 const routers: Router = Router();
@@ -12,6 +11,7 @@ const routers: Router = Router();
 const userController = new UserController();
 const teamController = new TeamController();
 const matchController = new MatchController();
+const validate = new Token();
 
 routers.post('/login', async (req: Request, res: Response) => { 
   const { code, message } = await userController.login(req, res)
@@ -19,7 +19,7 @@ routers.post('/login', async (req: Request, res: Response) => {
 })
 
 // routers.get('/login/validate', async (req, res) => {
-routers.get('/login/validate', authenticationMiddleware, async (_req, res: Response) => {
+routers.get('/login/validate', validate.validateToken,  async (_req, res: Response) => {
   // console.log(res.locals.payload);
   const { email } = res.locals.payload;
   // console.log(email);
@@ -47,21 +47,21 @@ routers.get('/matches', async (req: Request, res: Response) => {
   res.status(code).json(message)
 });
 
-routers.post('/matches', authenticationMiddleware, async (req: Request, res: Response) => {
+routers.post('/matches', validate.validateToken,  async (req: Request, res: Response) => {
   const { code, message } = await matchController.createMatch(req.body);
   console.log(message);
   
   res.status(code).json(message)
 });
 
-routers.patch('/matches/:id/finish', authenticationMiddleware, async (req: Request, res: Response) => {
+routers.patch('/matches/:id/finish',  async (req: Request, res: Response) => {
   const { id } = req.params;
   const { code, message } = await matchController.finishMatch(id); 
   // console.log("message", message);
   res.status(code).json(message)
 });
 
-routers.patch('/matches/:id', authenticationMiddleware, async (req: Request, res: Response) => {
+routers.patch('/matches/:id', validate.validateToken, async (req: Request, res: Response) => {
   const { id } = req.params;
   const { homeTeamGoals, awayTeamGoals } = req.body;
   const { code, message } = await matchController.updateMatch(id, homeTeamGoals, awayTeamGoals);

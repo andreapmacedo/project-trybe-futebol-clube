@@ -6,34 +6,11 @@ import BcryptService from './utils/BcriptService';
 
 class UserServices {
 
-  // validateEmail(value: string) {
-  //   const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+$/i;
-  //   const result = value.match(regex);
-  //   if( result ) return true;
-  //   return { code: 400, message: { message: 'All fields must be filled' } };
-  // }
-
-  // validatePassword(value: string) {
-  //   if (value.length > 6) return true;
-  //   return { code: 400, message: { message: 'All fields must be filled' } };
-  // }
-
-
-  // validateEmail(value: string) {
-  //   const regex = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+$/i;
-  //   const result = value.match(regex);
-  //   if (!result) return false
-  //   return result;
-  // }
-
-  // validatePassword(value: string)  {
-  //   if (value.length > 6) return value;
-  //   return false;
-  // }
-
   // TODO: Falta tipar o retorno
   async login(body: IUser) {
     
+
+
     if(!body.email) {
       return { code: 400, message: { message: 'All fields must be filled' } }
     }
@@ -44,7 +21,6 @@ class UserServices {
 
     const data = await User.findOne({
       where: { email: body.email },
-      // where: { email: validatedEmail },
     })
   
     if (!data) return { code: 401, message: { message: 'Incorrect email or password' } };
@@ -58,8 +34,9 @@ class UserServices {
       return { code: 401, message: { message: 'Incorrect email or password' } };
     }
     
-    const tokenGenerator = new Token();
-    const token = tokenGenerator.generateJWTToken({email: body.email, password: body.password});
+    // const tokenGenerator = new Token();
+    // const token = tokenGenerator.generateJWTToken({email: body.email, password: body.password});
+    const token =  Token.generateToken(data);
     return { code: 200, message: { token } }; 
   }
 

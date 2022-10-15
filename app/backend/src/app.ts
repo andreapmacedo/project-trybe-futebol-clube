@@ -1,7 +1,6 @@
 import * as express from 'express';
 import UserController from './database/controllers/UserController';
 
-import errorMiddleware from './middlewares/http.error.middleware'
 // import login from './routes/login.route';
 import routers from './routers';
 

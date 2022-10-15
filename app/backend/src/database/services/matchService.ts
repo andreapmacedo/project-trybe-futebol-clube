@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import { IMatch } from "../interfaces/matche.interface";
 import Matches from "../models/Matches";
 import Teams from "../models/Teams";
@@ -6,11 +7,7 @@ import Teams from "../models/Teams";
 
 class MatchService {
 
-  //TODO: falta tipar o retorno
-  // async getMatches () {
-  //   const data = await Matches.findAll();
-  //   return { code: 200, message: data  };
-  // }
+  
   private _matches = Matches;
   private _isInProgress: number;  
   
@@ -24,8 +21,8 @@ class MatchService {
     return this._isInProgress;
   }
 
-  async getMatches (inProgress?: string) {
-    
+  //TODO: falta tipar o retorno
+  async getMatches (inProgress?: string) {  
     let matches;
     const ASSOCIATIONS = [
       { model: Teams, as: 'teamHome', attributes: ['teamName'] },
@@ -62,6 +59,7 @@ class MatchService {
     return { code: 200, message: matches  };
   };
   
+  //TODO: falta tipar o retorno
   async getMatchesByProgress (query: string)   {
     const matchStatus = this.convertInProgress(query);
 
@@ -80,26 +78,39 @@ class MatchService {
     return { code: 200, message: matches  };
   }
 
-
   public async createMatch(body : IMatch) {
-    // const {
-    //   homeTeam,
-    //   awayTeam,
-    //   homeTeamGoals,
-    //   awayTeamGoals,
-    //   inProgress,
-    // } = body;   
-    console.log('body', body);
+    const {
+      homeTeam,
+      awayTeam,
+      homeTeamGoals,
+      awayTeamGoals,
+      inProgress,
+    } = body;   
+    // console.log('body', body);
     
+    if (homeTeam === awayTeam) {
+      return { code: 401, message: 'It is not possible to create a match with two equal teams' };
+    }
+
+    const hasTeams = await this._matches.findAll({
+      where: { [Op.or]: [{ id: homeTeam }, { id: awayTeam }] },
+    });
+
+    if (hasTeams.length !== 2) {
+      return { code: 404, message: 'There is no team with such id!' };
+    }
+
     const response = await this._matches.create(body);
     return { code: 201, message: response };
   }
 
+  //TODO: falta tipar o retorno
   public async finishMatch(id: string) {
     await this._matches.update({ inProgress: 0 }, { where: { id } });
     return { code: 200,  message: 'Finished'  };
   }
 
+  //TODO: falta tipar o retorno
   public async updateMatch(id: string, homeTeamGoals: string, awayTeamGoals: string) {
     await this._matches.update({homeTeamGoals, awayTeamGoals}, { where: { id } });
     return { code: 200,  message: 'Updated'  };

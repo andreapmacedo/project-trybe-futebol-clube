@@ -8,7 +8,6 @@ class MatchController {
     this.service = new MatchService();
   }
 
-
   public async getMatches(inProgress: any) {
     if (inProgress) {
       const response = await this.service.getMatchesByProgress(inProgress);
@@ -18,10 +17,7 @@ class MatchController {
       return response
   }
 
-
-
   public async createMatch(body: IMatch) {
-
     const response = await this.service.createMatch(body);    
     return response
   }

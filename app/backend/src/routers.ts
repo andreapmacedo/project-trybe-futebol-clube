@@ -40,20 +40,24 @@ routers.get('/teams/:id', async (req: Request, res: Response) => {
   res.status(code).json(message)
 });
 
-routers.get('/', async (req: Request, res: Response) => {
-  const { inProgress } = req.query; 
+routers.get('/matches', async (req: Request, res: Response) => {
+  const { inProgress } = req.query;
+  console.log("inProgress", inProgress);
+   
   const { code, message } = await matchController.getMatches(inProgress);
   res.status(code).json(message)
 });
 
-routers.patch('/:id/finish', async (req: Request, res: Response) => {
+routers.patch('/matches/:id/finish', async (req: Request, res: Response) => {
   const { id } = req.params;
+  console.log("id", id);
   const { code, message } = await matchController.finishMatch(id);
   res.status(code).json(message)
 });
 
-routers.patch('/:id', async (req: Request, res: Response) => {
+routers.patch('/matches/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
+  console.log("id", id);
   const { homeTeamGoals, awayTeamGoals } = req.body;
   const { code, message } = await matchController.updateMatch(id, homeTeamGoals, awayTeamGoals);
   res.status(code).json(message)

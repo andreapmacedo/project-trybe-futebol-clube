@@ -23,21 +23,43 @@ class MatchService {
     return this._isInProgress;
   }
 
-  async getMatches () {
-    const matches = await this._matches.findAll({
-      include: [{
-        model: Teams,
-        as: 'teamHome',
-        attributes: ['teamName'],
-      }, {
-        model: Teams,
-        as: 'teamAway',
-        attributes: ['teamName'],
-      }],
-    });
+  async getMatches (inProgress?: string) {
+    
+    let matches;
+    const ASSOCIATIONS = [
+      { model: Teams, as: 'teamHome', attributes: ['teamName'] },
+      { model: Teams, as: 'teamAway', attributes: ['teamName'] },
+    ];
+
+    if (inProgress === undefined) {
+      matches = await this._matches.findAll({ include: ASSOCIATIONS });
+    } else {
+      matches = await this._matches.findAll({
+        where: { inProgress: inProgress === 'true' },
+        include: ASSOCIATIONS,
+      });
+    }
+
+    if (!matches || matches.length === 0) {
+      return { code: 400, error: { message: 'No matches found' } };
+    }
+
+    // const matches = await this._matches.findAll({
+    //   include: [{
+    //     model: Teams,
+    //     as: 'teamHome',
+    //     attributes: ['teamName'],
+    //   }, {
+    //     model: Teams,
+    //     as: 'teamAway',
+    //     attributes: ['teamName'],
+    //   }],
+    // });
     // return matches;
+    // console.log('matches', matches);
+    
     return { code: 200, message: matches  };
-  }
+  };
   
   async getMatchesByProgress (query: string)   {
     const matchStatus = this.convertInProgress(query);

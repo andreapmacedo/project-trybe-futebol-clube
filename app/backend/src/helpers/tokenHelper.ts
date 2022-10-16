@@ -4,7 +4,7 @@ import * as jwt from 'jsonwebtoken';
 import 'dotenv/config';
 
 const { JWT_SECRET } = process.env;
-const secret: string = 'akldhkjladadhjksvdhj';
+// const secret: string = 'akldhkjladadhjksvdhj';
 // const JWT_CONFIG = { algorithm: 'HS256', expiresIn: '1d' };
 
 class tokenHelper {
@@ -12,8 +12,8 @@ class tokenHelper {
   static createToken = (payload: object) => {
     // const token = jwt.sign(payload, JWT_SECRET, JWT_CONFIG);
     // const token = jwt.sign(payload, JWT_SECRET as string, JWT_CONFIG);
-    // const token = jwt.sign(payload, JWT_SECRET as string, { algorithm: 'HS256', expiresIn: '1d' });
-    const token = jwt.sign(payload, secret, { algorithm: 'HS256', expiresIn: '1d' });
+    const token = jwt.sign(payload, JWT_SECRET as string, { algorithm: 'HS256', expiresIn: '1d' });
+    // const token = jwt.sign(payload, secret, { algorithm: 'HS256', expiresIn: '1d' });
     return token;
   };
   
@@ -39,11 +39,11 @@ class tokenHelper {
     if (!authorization) return res.status(401).json({ message: 'Token not found' });
     try {
       // console.log('authorization: ', authorization);
-      console.log(secret);
+      // console.log(secret);
       
       // const user = this.verifyToken(authorization);
-      // const user = jwt.verify(authorization, JWT_SECRET as string);
-      const user = jwt.verify(authorization, secret);
+      const user = jwt.verify(authorization, JWT_SECRET as string);
+      // const user = jwt.verify(authorization, secret);
       // const user = jwt.verify(authorization, process.env.JWT_SECRET as string);
       console.log('user: ', user);
       req.body.user = user;

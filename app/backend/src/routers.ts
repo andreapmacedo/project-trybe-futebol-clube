@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import UserController from './database/controllers/UserController';
 import TeamController from './database/controllers/TeamController';
 import MatchController from './database/controllers/MatchController';
+// import authenticationMiddleware from './middlewares/auth.middleware';
 // import Token from './shared/TokenGenerator';
 // import auth from './middlewares/Auth';
 import tokenHelper from './helpers/tokenHelper';
@@ -21,16 +22,17 @@ routers.post('/login', async (req: Request, res: Response) => {
 
 // routers.get('/login/validate', async (req, res) => {
 routers.get('/login/validate', tokenHelper.auth, async (req: Request, res: Response) => {
+// routers.get('/login/validate', tokenHelper.auth, async (req: Request, res: Response) => {
   // console.log(res.locals.payload);
   // const { email } = res.locals.payload;
-  // const { id } = req.body.user;
+  const { email } = req.body.user;
   // console.log('id', id);
   
   // console.log(email);
-  // const { code, message } = await userController.getRole(email);
+  const { code, message } = await userController.getRole(email);
   // console.log(id);
   // console.log(`teste`);
-  // res.status(code).json(message);
+  res.status(code).json(message);
 });
 
 routers.get('/teams', async (req: Request, res: Response) => { 

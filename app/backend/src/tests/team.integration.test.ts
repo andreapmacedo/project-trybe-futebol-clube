@@ -9,17 +9,69 @@ chai.use(chaiHttp);
 
 const teamsMock = [
   {
-    "id": 1,
-    "teamName": 'Avaí/Kindermann'
-  },
-  {
-    "id": 2,
-    "teamName": 'Bahia'
-  },
-  {
-    "id": 3,
-    "teamName": 'Botafogo'
-  }
+		"id": 1,
+		"teamName": "Avaí/Kindermann"
+	},
+	{
+		"id": 2,
+		"teamName": "Bahia"
+	},
+	{
+		"id": 3,
+		"teamName": "Botafogo"
+	},
+	{
+		"id": 4,
+		"teamName": "Corinthians"
+	},
+	{
+		"id": 5,
+		"teamName": "Cruzeiro"
+	},
+	{
+		"id": 6,
+		"teamName": "Ferroviária"
+	},
+	{
+		"id": 7,
+		"teamName": "Flamengo"
+	},
+	{
+		"id": 8,
+		"teamName": "Grêmio"
+	},
+	{
+		"id": 9,
+		"teamName": "Internacional"
+	},
+	{
+		"id": 10,
+		"teamName": "Minas Brasília"
+	},
+	{
+		"id": 11,
+		"teamName": "Napoli-SC"
+	},
+	{
+		"id": 12,
+		"teamName": "Palmeiras"
+	},
+	{
+		"id": 13,
+		"teamName": "Real Brasília"
+	},
+	{
+		"id": 14,
+		"teamName": "Santos"
+	},
+	{
+		"id": 15,
+		"teamName": "São José-SP"
+	},
+	{
+		"id": 16,
+		"teamName": "São Paulo"
+	}
 ]
  
 
@@ -32,16 +84,7 @@ const teamMock = {
 describe('/teams', () => {
   describe('GET', () => {
 
-    before(() => {
-      Sinon.stub(Teams, 'findAll').resolves(teamsMock as Teams[]);
-    })
-
-    after(() => {
-      (Teams.findAll as Sinon.SinonStub).restore();
-    })
-
-
-    describe('Teste se é possível consultar times', () => {
+    describe('Verifica se é possível consultar times', () => {
       it('Verifica se a requisição retorna com status 200 e exibe uma lista de times.', async () => {
         const resp = await chai.request(app)
         .get('/teams')
@@ -51,19 +94,17 @@ describe('/teams', () => {
         chai.expect(resp.body).to.deep.equal(teamsMock);
       });
       
-      // it('Verifica se a requisição retorna uma lista times.', async () => {
-      //   const resp = await chai.request(app)
-      //   .get('/teams')
-      //   // chai.expect(resp.status).to.be.equal(200);
-      //   chai.expect(resp.body).to.deep.equal(teamsMock);
-      // });
+      it('Verifica se é possível retornar dados de um time específico', async () => {
+        // const token = await Token.generateToken(data)
+        const response = await chai.request(app).get('/teams/2');
+        chai.expect(response.status).to.be.eq(200);
+        chai.expect(response.body).to.have.a.property('teamName', 'Bahia');      
+      });
     
-  
     });
-  
-  
-  
+    
   });
+
 });
 
 describe('/teams/:id', () => {
@@ -78,7 +119,7 @@ describe('/teams/:id', () => {
     })
 
 
-    describe('Teste se é possível pesquisar por um time', () => {
+    describe('Verifica se é possível pesquisar por um time', () => {
       it('Verifica se a requisição retorna com status 200 e exibe um time.', async () => {
         const resp = await chai.request(app)
         .get('/teams/:id')
@@ -91,4 +132,5 @@ describe('/teams/:id', () => {
     });
 
   });
+  
 });

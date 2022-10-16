@@ -4,685 +4,86 @@ import chaiHttp = require('chai-http');
 import * as Sinon from 'sinon';
 import { app } from '../app';
 import Matches from '../database/models/Matches';
-import { IMatchWithTeamsModel } from '../database/interfaces/matche.interface';
+import * as jwt from 'jsonwebtoken';
 
 chai.use(chaiHttp);
 
-const matchesMock = [
+const teamsMock = [
 	{
 		"id": 1,
-		"homeTeam": 16,
-		"homeTeamGoals": 1,
-		"awayTeam": 8,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "São Paulo"
-		},
-		"teamAway": {
-			"teamName": "Grêmio"
-		}
+		"teamName": "Avaí/Kindermann"
 	},
 	{
 		"id": 2,
-		"homeTeam": 9,
-		"homeTeamGoals": 1,
-		"awayTeam": 14,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Internacional"
-		},
-		"teamAway": {
-			"teamName": "Santos"
-		}
+		"teamName": "Bahia"
 	},
 	{
 		"id": 3,
-		"homeTeam": 4,
-		"homeTeamGoals": 3,
-		"awayTeam": 11,
-		"awayTeamGoals": 0,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Corinthians"
-		},
-		"teamAway": {
-			"teamName": "Napoli-SC"
-		}
+		"teamName": "Botafogo"
 	},
 	{
 		"id": 4,
-		"homeTeam": 3,
-		"homeTeamGoals": 0,
-		"awayTeam": 2,
-		"awayTeamGoals": 0,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Botafogo"
-		},
-		"teamAway": {
-			"teamName": "Bahia"
-		}
+		"teamName": "Corinthians"
 	},
 	{
 		"id": 5,
-		"homeTeam": 7,
-		"homeTeamGoals": 1,
-		"awayTeam": 10,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Flamengo"
-		},
-		"teamAway": {
-			"teamName": "Minas Brasília"
-		}
+		"teamName": "Cruzeiro"
 	},
 	{
 		"id": 6,
-		"homeTeam": 5,
-		"homeTeamGoals": 1,
-		"awayTeam": 13,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Cruzeiro"
-		},
-		"teamAway": {
-			"teamName": "Real Brasília"
-		}
+		"teamName": "Ferroviária"
 	},
 	{
 		"id": 7,
-		"homeTeam": 12,
-		"homeTeamGoals": 2,
-		"awayTeam": 6,
-		"awayTeamGoals": 2,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Palmeiras"
-		},
-		"teamAway": {
-			"teamName": "Ferroviária"
-		}
+		"teamName": "Flamengo"
 	},
 	{
 		"id": 8,
-		"homeTeam": 15,
-		"homeTeamGoals": 0,
-		"awayTeam": 1,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "São José-SP"
-		},
-		"teamAway": {
-			"teamName": "Avaí/Kindermann"
-		}
+		"teamName": "Grêmio"
 	},
 	{
 		"id": 9,
-		"homeTeam": 1,
-		"homeTeamGoals": 0,
-		"awayTeam": 12,
-		"awayTeamGoals": 3,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Avaí/Kindermann"
-		},
-		"teamAway": {
-			"teamName": "Palmeiras"
-		}
+		"teamName": "Internacional"
 	},
 	{
 		"id": 10,
-		"homeTeam": 2,
-		"homeTeamGoals": 0,
-		"awayTeam": 9,
-		"awayTeamGoals": 2,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Bahia"
-		},
-		"teamAway": {
-			"teamName": "Internacional"
-		}
+		"teamName": "Minas Brasília"
 	},
 	{
 		"id": 11,
-		"homeTeam": 13,
-		"homeTeamGoals": 1,
-		"awayTeam": 3,
-		"awayTeamGoals": 0,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Real Brasília"
-		},
-		"teamAway": {
-			"teamName": "Botafogo"
-		}
+		"teamName": "Napoli-SC"
 	},
 	{
 		"id": 12,
-		"homeTeam": 6,
-		"homeTeamGoals": 0,
-		"awayTeam": 4,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Ferroviária"
-		},
-		"teamAway": {
-			"teamName": "Corinthians"
-		}
+		"teamName": "Palmeiras"
 	},
 	{
 		"id": 13,
-		"homeTeam": 8,
-		"homeTeamGoals": 2,
-		"awayTeam": 5,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Grêmio"
-		},
-		"teamAway": {
-			"teamName": "Cruzeiro"
-		}
+		"teamName": "Real Brasília"
 	},
 	{
 		"id": 14,
-		"homeTeam": 14,
-		"homeTeamGoals": 2,
-		"awayTeam": 16,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Santos"
-		},
-		"teamAway": {
-			"teamName": "São Paulo"
-		}
+		"teamName": "Santos"
 	},
 	{
 		"id": 15,
-		"homeTeam": 10,
-		"homeTeamGoals": 0,
-		"awayTeam": 15,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Minas Brasília"
-		},
-		"teamAway": {
-			"teamName": "São José-SP"
-		}
+		"teamName": "São José-SP"
 	},
 	{
 		"id": 16,
-		"homeTeam": 11,
-		"homeTeamGoals": 0,
-		"awayTeam": 7,
-		"awayTeamGoals": 0,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Napoli-SC"
-		},
-		"teamAway": {
-			"teamName": "Flamengo"
-		}
-	},
-	{
-		"id": 17,
-		"homeTeam": 1,
-		"homeTeamGoals": 2,
-		"awayTeam": 8,
-		"awayTeamGoals": 3,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Avaí/Kindermann"
-		},
-		"teamAway": {
-			"teamName": "Grêmio"
-		}
-	},
-	{
-		"id": 18,
-		"homeTeam": 12,
-		"homeTeamGoals": 4,
-		"awayTeam": 5,
-		"awayTeamGoals": 2,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Palmeiras"
-		},
-		"teamAway": {
-			"teamName": "Cruzeiro"
-		}
-	},
-	{
-		"id": 19,
-		"homeTeam": 11,
-		"homeTeamGoals": 2,
-		"awayTeam": 2,
-		"awayTeamGoals": 2,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Napoli-SC"
-		},
-		"teamAway": {
-			"teamName": "Bahia"
-		}
-	},
-	{
-		"id": 20,
-		"homeTeam": 7,
-		"homeTeamGoals": 0,
-		"awayTeam": 9,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Flamengo"
-		},
-		"teamAway": {
-			"teamName": "Internacional"
-		}
-	},
-	{
-		"id": 21,
-		"homeTeam": 6,
-		"homeTeamGoals": 3,
-		"awayTeam": 13,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Ferroviária"
-		},
-		"teamAway": {
-			"teamName": "Real Brasília"
-		}
-	},
-	{
-		"id": 22,
-		"homeTeam": 4,
-		"homeTeamGoals": 3,
-		"awayTeam": 3,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Corinthians"
-		},
-		"teamAway": {
-			"teamName": "Botafogo"
-		}
-	},
-	{
-		"id": 23,
-		"homeTeam": 15,
-		"homeTeamGoals": 2,
-		"awayTeam": 16,
-		"awayTeamGoals": 3,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "São José-SP"
-		},
-		"teamAway": {
-			"teamName": "São Paulo"
-		}
-	},
-	{
-		"id": 24,
-		"homeTeam": 10,
-		"homeTeamGoals": 2,
-		"awayTeam": 14,
-		"awayTeamGoals": 2,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Minas Brasília"
-		},
-		"teamAway": {
-			"teamName": "Santos"
-		}
-	},
-	{
-		"id": 25,
-		"homeTeam": 2,
-		"homeTeamGoals": 0,
-		"awayTeam": 6,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Bahia"
-		},
-		"teamAway": {
-			"teamName": "Ferroviária"
-		}
-	},
-	{
-		"id": 26,
-		"homeTeam": 13,
-		"homeTeamGoals": 1,
-		"awayTeam": 1,
-		"awayTeamGoals": 0,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Real Brasília"
-		},
-		"teamAway": {
-			"teamName": "Avaí/Kindermann"
-		}
-	},
-	{
-		"id": 27,
-		"homeTeam": 5,
-		"homeTeamGoals": 1,
-		"awayTeam": 15,
-		"awayTeamGoals": 2,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Cruzeiro"
-		},
-		"teamAway": {
-			"teamName": "São José-SP"
-		}
-	},
-	{
-		"id": 28,
-		"homeTeam": 16,
-		"homeTeamGoals": 3,
-		"awayTeam": 7,
-		"awayTeamGoals": 0,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "São Paulo"
-		},
-		"teamAway": {
-			"teamName": "Flamengo"
-		}
-	},
-	{
-		"id": 29,
-		"homeTeam": 9,
-		"homeTeamGoals": 0,
-		"awayTeam": 4,
-		"awayTeamGoals": 4,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Internacional"
-		},
-		"teamAway": {
-			"teamName": "Corinthians"
-		}
-	},
-	{
-		"id": 30,
-		"homeTeam": 3,
-		"homeTeamGoals": 0,
-		"awayTeam": 12,
-		"awayTeamGoals": 4,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Botafogo"
-		},
-		"teamAway": {
-			"teamName": "Palmeiras"
-		}
-	},
-	{
-		"id": 31,
-		"homeTeam": 8,
-		"homeTeamGoals": 2,
-		"awayTeam": 10,
-		"awayTeamGoals": 0,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Grêmio"
-		},
-		"teamAway": {
-			"teamName": "Minas Brasília"
-		}
-	},
-	{
-		"id": 32,
-		"homeTeam": 14,
-		"homeTeamGoals": 5,
-		"awayTeam": 11,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Santos"
-		},
-		"teamAway": {
-			"teamName": "Napoli-SC"
-		}
-	},
-	{
-		"id": 33,
-		"homeTeam": 1,
-		"homeTeamGoals": 1,
-		"awayTeam": 16,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Avaí/Kindermann"
-		},
-		"teamAway": {
-			"teamName": "São Paulo"
-		}
-	},
-	{
-		"id": 34,
-		"homeTeam": 9,
-		"homeTeamGoals": 3,
-		"awayTeam": 6,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Internacional"
-		},
-		"teamAway": {
-			"teamName": "Ferroviária"
-		}
-	},
-	{
-		"id": 35,
-		"homeTeam": 10,
-		"homeTeamGoals": 1,
-		"awayTeam": 5,
-		"awayTeamGoals": 3,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Minas Brasília"
-		},
-		"teamAway": {
-			"teamName": "Cruzeiro"
-		}
-	},
-	{
-		"id": 36,
-		"homeTeam": 2,
-		"homeTeamGoals": 0,
-		"awayTeam": 7,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Bahia"
-		},
-		"teamAway": {
-			"teamName": "Flamengo"
-		}
-	},
-	{
-		"id": 37,
-		"homeTeam": 15,
-		"homeTeamGoals": 0,
-		"awayTeam": 13,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "São José-SP"
-		},
-		"teamAway": {
-			"teamName": "Real Brasília"
-		}
-	},
-	{
-		"id": 38,
-		"homeTeam": 14,
-		"homeTeamGoals": 2,
-		"awayTeam": 4,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Santos"
-		},
-		"teamAway": {
-			"teamName": "Corinthians"
-		}
-	},
-	{
-		"id": 39,
-		"homeTeam": 3,
-		"homeTeamGoals": 2,
-		"awayTeam": 11,
-		"awayTeamGoals": 0,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Botafogo"
-		},
-		"teamAway": {
-			"teamName": "Napoli-SC"
-		}
-	},
-	{
-		"id": 40,
-		"homeTeam": 12,
-		"homeTeamGoals": 4,
-		"awayTeam": 8,
-		"awayTeamGoals": 1,
-		"inProgress": false,
-		"teamHome": {
-			"teamName": "Palmeiras"
-		},
-		"teamAway": {
-			"teamName": "Grêmio"
-		}
-	},
-	{
-		"id": 41,
-		"homeTeam": 16,
-		"homeTeamGoals": 2,
-		"awayTeam": 9,
-		"awayTeamGoals": 0,
-		"inProgress": true,
-		"teamHome": {
-			"teamName": "São Paulo"
-		},
-		"teamAway": {
-			"teamName": "Internacional"
-		}
-	},
-	{
-		"id": 42,
-		"homeTeam": 6,
-		"homeTeamGoals": 1,
-		"awayTeam": 1,
-		"awayTeamGoals": 0,
-		"inProgress": true,
-		"teamHome": {
-			"teamName": "Ferroviária"
-		},
-		"teamAway": {
-			"teamName": "Avaí/Kindermann"
-		}
-	},
-	{
-		"id": 43,
-		"homeTeam": 11,
-		"homeTeamGoals": 0,
-		"awayTeam": 10,
-		"awayTeamGoals": 0,
-		"inProgress": true,
-		"teamHome": {
-			"teamName": "Napoli-SC"
-		},
-		"teamAway": {
-			"teamName": "Minas Brasília"
-		}
-	},
-	{
-		"id": 44,
-		"homeTeam": 7,
-		"homeTeamGoals": 2,
-		"awayTeam": 15,
-		"awayTeamGoals": 2,
-		"inProgress": true,
-		"teamHome": {
-			"teamName": "Flamengo"
-		},
-		"teamAway": {
-			"teamName": "São José-SP"
-		}
-	},
-	{
-		"id": 45,
-		"homeTeam": 5,
-		"homeTeamGoals": 1,
-		"awayTeam": 3,
-		"awayTeamGoals": 1,
-		"inProgress": true,
-		"teamHome": {
-			"teamName": "Cruzeiro"
-		},
-		"teamAway": {
-			"teamName": "Botafogo"
-		}
-	},
-	{
-		"id": 46,
-		"homeTeam": 4,
-		"homeTeamGoals": 1,
-		"awayTeam": 12,
-		"awayTeamGoals": 1,
-		"inProgress": true,
-		"teamHome": {
-			"teamName": "Corinthians"
-		},
-		"teamAway": {
-			"teamName": "Palmeiras"
-		}
-	},
-	{
-		"id": 47,
-		"homeTeam": 8,
-		"homeTeamGoals": 1,
-		"awayTeam": 14,
-		"awayTeamGoals": 2,
-		"inProgress": true,
-		"teamHome": {
-			"teamName": "Grêmio"
-		},
-		"teamAway": {
-			"teamName": "Santos"
-		}
-	},
-	{
-		"id": 48,
-		"homeTeam": 13,
-		"homeTeamGoals": 1,
-		"awayTeam": 2,
-		"awayTeamGoals": 1,
-		"inProgress": true,
-		"teamHome": {
-			"teamName": "Real Brasília"
-		},
-		"teamAway": {
-			"teamName": "Bahia"
-		}
+		"teamName": "São Paulo"
 	}
 ]
  
+const typeMatchMock = {
+  "id": 1,
+  "homeTeam": 16,
+  "homeTeamGoals": 2,
+  "awayTeam": 8,
+  "awayTeamGoals": 2,
+  "inProgress": true,
+}
+
 
 const matcheMock = 	{
   "id": 1,
@@ -699,68 +100,129 @@ const matcheMock = 	{
   }
 }
 
+const validMatcheMock = {
+	"homeTeam": 5,
+	"awayTeam": 5,
+	"homeTeamGoals": 1,
+	"awayTeamGoals": 4,
+	"inProgress": true
+}
 
-describe('/teams', () => {
-  describe('GET', () => {
+const duplicateTeamMatcheMock = {
+	"homeTeam": 2,
+	"awayTeam": 2,
+	"homeTeamGoals": 1,
+	"awayTeamGoals": 0,
+	"inProgress": true
+}
 
-    before(() => {
-      // Sinon.stub(Matches, 'findAll').resolves(matchesMock as Matches[]);
-      Sinon.stub(Matches, 'findAll').resolves(matchesMock as IMatchWithTeamsModel[]);
-    })
+	const noTeamMatcheMock = {
+		"homeTeam": 100,
+		"awayTeam": 8,
+		"homeTeamGoals": 4,
+		"awayTeamGoals": 1,
+		"inProgress": true
+}
 
-    after(() => {
-      (Matches.findAll as Sinon.SinonStub).restore();
-    })
+const errorMessageDuplicateTeam = { message: 'It is not possible to create a match with two equal teams' };
+	
 
-
-    describe('Teste se é possível consultar jogos', () => {
-      it('Verifica se a requisição retorna com status 200 e exibe uma lista de jogos.', async () => {
-        const resp = await chai.request(app)
-        .get('/matches')
-        // .send(matchesMock);
-        chai.expect(resp.status).to.be.equal(200);
-        chai.expect(resp.body).to.be.an('array')
-        chai.expect(resp.body).to.deep.equal(matchesMock);
-      });
-      
-      // it('Verifica se a requisição retorna uma lista times.', async () => {
-      //   const resp = await chai.request(app)
-      //   .get('/teams')
-      //   // chai.expect(resp.status).to.be.equal(200);
-      //   chai.expect(resp.body).to.deep.equal(matchesMock);
-      // });
-    
-  
-    });
-  
-  
-  
-  });
-});
-
-describe('/matches/:id', () => {
-  describe('GET', () => {
-
+describe('/matches', () => {
+  describe('POST', () => {
+		const payload = { id: 1, username: 'Admin'};
     // before(() => {
-    //   Sinon.stub(Matches, 'findByPk').resolves(teamMock as Matches);
+    //   // Sinon.stub(Matches, 'findAll').resolves(matchesMock as Matches[]);
+    //   Sinon.stub(Matches, 'findAll').resolves(matchesMock as any);
     // })
 
     // after(() => {
-    //   (Matches.findByPk as Sinon.SinonStub).restore();
+    //   (Matches.findAll as Sinon.SinonStub).restore();
     // })
 
+		describe('Verifica o retorno ao criar uma nova partida', () => {
+			const returnFindAllOk = [teamsMock[0], teamsMock[1]] as any;
+			const returnFindAllFail = [teamsMock[0]] as any;
 
-    // describe('Teste se é possível pesquisar por um time', () => {
-    //   it('Verifica se a requisição retorna com status 200 e exibe um time.', async () => {
-    //     const resp = await chai.request(app)
-    //     .get('/teams/:id')
-    //     // .send(matchesMock);
-    //     chai.expect(resp.status).to.be.equal(200);
-    //     chai.expect(resp.body).to.be.an('object')
-    //     chai.expect(resp.body).to.deep.equal(teamMock);
-    //   });
-       
-    // });
+
+			before(() => {
+				Sinon.stub(jwt, 'verify').resolves(payload);
+				Sinon.stub(Matches, 'create').resolves(typeMatchMock as Matches);
+			});
+	
+			after(() => {
+				(jwt.verify as Sinon.SinonStub).restore();
+				(Matches.create as Sinon.SinonStub).restore();
+			});
+	
+			it('Verifica se ao ser inserido o mesmo time o retorno da requisição deverá ter o status 401 e a mensagem com o erro', async () => {
+				// Sinon.stub(ValidateInfosMatch, 'findAll').resolves(returnFindAllOk);
+	
+				const resp = await chai.request(app).post('/matches').send(validMatcheMock).set('Authorization', 'tokentestes');
+				chai.expect(resp.status).to.be.equal(401);
+				chai.expect(resp.body).to.be.deep.equal(errorMessageDuplicateTeam);
+				// chai.expect(resp.body).to.be.deep.equal(typeMatchMock);
+				
+				// (ValidateInfosMatch.findAll as Sinon.SinonStub).restore();
+			});
+
+
+			// it('Deve retornar um status 404 e uma mensagem de erro caso não tenha partidas cadastradas', async () => {
+			// 	Sinon.stub(Matches, 'findAll').resolves([]);
+			// 	const resp = await chai.request(app).get('/matches');
+			// 	chai.expect(resp.status).to.be.equal(404);
+			// 	chai.expect(resp.body).to.be.have.property('message');
+			// 	chai.expect(resp.body.message).to.be.equal('No matches found');
+			// 	(Matches.findAll as Sinon.SinonStub).restore();
+			// });
+
+    });  
+
+		describe('Verifica o retorno ao finalizar ou atualizar uma partida', () => {
+			before(() => {
+				Sinon.stub(jwt, 'verify').resolves(payload);
+				Sinon.stub(Matches, 'update').resolves();
+			});
+	
+			after(() => {
+				(jwt.verify as Sinon.SinonStub).restore();
+				(Matches.update as Sinon.SinonStub).restore();
+			});
+	
+			it('Deve retornar um status 200 e uma mensagem de sucesso ao finalizar uma partida', async () => {
+				const resp = await chai.request(app).patch('/matches/1/finish').set('Authorization', 'tokentestes');
+				chai.expect(resp.status).to.be.equal(200);
+				// chai.expect(resp.body).to.be.have.property('message');
+				// chai.expect(resp.body.message).to.be.equal('Finished');
+			});
+	
+			it('Deve retornar um status 200 e uma mensagem de sucesso ao atualizar uma partida', async () => {
+				const bodyRequest = { "homeTeamGoals": 3, "awayTeamGoals": 1 };
+				const resp = await chai.request(app).patch('/matches/1').send(bodyRequest).set('Authorization', 'tokentestes');
+				chai.expect(resp.status).to.be.equal(200);
+				// chai.expect(resp.body).to.be.have.property('message');
+				// chai.expect(resp.body.message).to.be.equal('Updated');
+			});
+		});
+	});
+});
+
+describe('/matches', () => {
+  describe('GET', () => {
+		// let resp: Response;
+		// const payload = { id: 1, username: 'Admin'};
+	
+		describe('Verifica o retorno ao buscar todas as partidas cadastradas no banco de dados ', () => {
+			it('Deve retornar um status 200 e um array com todas as partidas cadastradas', async () => {
+				// Sinon.stub(Matches, 'findAll').resolves(matchesFake as MatchIncludesTeams[]);
+				Sinon.stub(Matches, 'findAll').resolves(matcheMock as any);
+				const resp = await chai.request(app).get('/matches');
+				chai.expect(resp.status).to.be.equal(200);
+				// chai.expect(resp.body).to.be.deep.equal(matchesFake);
+				chai.expect(resp.body).to.be.deep.equal(matcheMock);
+				(Matches.findAll as Sinon.SinonStub).restore();
+			});
+
+		});
 
   });
 });

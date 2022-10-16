@@ -41,7 +41,7 @@ describe('/login', () => {
     //   Sinon.restore();
     // })
 
-    describe('Teste em caso de usuário encontrado', () => {
+    describe('Verifica se em caso de usuário encontrado', () => {
       it('permita o acesso com dados válidos', async () => {
         const resp = await chai.request(app)
         .post('/login')
@@ -51,7 +51,7 @@ describe('/login', () => {
       });
     });
 
-    describe('Teste em caso de usuário encontrado', () => {
+    describe('Verifica se em caso de usuário encontrado', () => {
       // before(() => {
       //   Sinon.stub(User, 'findOne').resolves(loginMock as User);
       // })
@@ -72,7 +72,7 @@ describe('/login', () => {
       })
     })
 
-    describe('Teste em caso de usuário não encontrado', () => {
+    describe('Verifica se em caso de usuário não encontrado', () => {
       before(() => {
         Sinon.stub(User, 'findOne').resolves(undefined);
       })

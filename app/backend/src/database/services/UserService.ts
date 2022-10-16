@@ -1,7 +1,7 @@
 // import sequelize from '../models';
 import User from '../models/User';
 import { IUser, IUserCreate } from '../interfaces/User.interface';
-import Token from '../../shared/TokenGenerator';
+// import Token from '../../shared/TokenGenerator';
 // import createToken  from '../../helpers/tokenHelper';
 import tokenHelper   from '../../helpers/tokenHelper';
 import BcryptService from './utils/BcriptService';

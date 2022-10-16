@@ -58,7 +58,7 @@ routers.post('/matches', tokenHelper.auth, async (req: Request, res: Response) =
   const { code, message } = await matchController.createMatch(req.body);
   console.log(message);
   
-  res.status(code).json(message)
+  res.status(code).json({message})
 });
 
 routers.patch('/matches/:id/finish', tokenHelper.auth,  async (req: Request, res: Response) => {

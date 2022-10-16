@@ -2,12 +2,14 @@
 import User from '../models/User';
 import { IUser, IUserCreate } from '../interfaces/User.interface';
 import Token from '../../shared/TokenGenerator';
+// import createToken  from '../../helpers/tokenHelper';
+import tokenHelper   from '../../helpers/tokenHelper';
 import BcryptService from './utils/BcriptService';
 
 class UserServices {
 
   // TODO: Falta tipar o retorno
-  async login(body: IUser) {
+  async login(body: IUser, res: any) {
     
 
 
@@ -34,9 +36,8 @@ class UserServices {
       return { code: 401, message: { message: 'Incorrect email or password' } };
     }
     
-    // const tokenGenerator = new Token();
-    // const token = tokenGenerator.generateJWTToken({email: body.email, password: body.password});
-    const token =  Token.generateToken(data);
+    const token = tokenHelper.createToken({email: body.email, password: body.password});
+    // const token = Token.generateToken({email: body.email, password: body.password}, res);
     return { code: 200, message: { token } }; 
   }
 

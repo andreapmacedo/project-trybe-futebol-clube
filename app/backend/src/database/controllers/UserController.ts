@@ -10,7 +10,7 @@ class UserController {
   }
 
   public async login(req: Request<{}, {}, IUser>, res: Response) {
-    const response = await this.service.login(req.body);    
+    const response = await this.service.login(req.body, res);    
     return response
   }
   

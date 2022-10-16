@@ -16,15 +16,6 @@ interface IToken {
   password: string;
 }
 
-
-
-import 'dotenv/config';
-
-
-const { JWT_SECRET } = process.env;
-const JWT_CONFIG: object = { algorithm: 'HS256', expiresIn: '1d' };
-
-
 class Token {
   // constructor(private jwtConfig?: jwt.SignOptions) {
   //   if (!jwtConfig) {
@@ -37,13 +28,8 @@ class Token {
   //   return jwt.sign(payload, SECRET, this.jwtConfig);
   // }
 
-  static createToken(payload: string) {
-    const token = jwt.sign(payload, JWT_SECRET as string, JWT_CONFIG);
-    return token;
-  }
 
-
-  static generateToken(data: IToken, res: Response) {
+  static generateToken(data: IToken) {
     const { email, password } = data;
     const payload = {
       email,
@@ -53,21 +39,22 @@ class Token {
       expiresIn: '1d',
       algorithm: 'HS256',
     });
-    res.locals.payload = data;
     return token;
   }
 
 
-  static validateToken = (req: Request, res: Response, next: NextFunction) => {
+  public validateToken = (req: Request, res: Response, next: NextFunction) => {
     const authorization = req.headers.authorization as string;
     console.log(authorization);
+    
     if (!authorization) return res.status(401).json({ message: 'Token not found' });
-    // const { email } = res.locals.payload;
+    const user = jwt.verify(authorization, process.env.JWT_SECRET as string);
+    console.log(`user`, user);
     
     try {
-      const dados = jwt.verify(authorization, JWT_SECRET as string);
-      // return dados;
-      res.locals.payload = dados;
+      console.log(`token`);
+      res.locals.payload = user;
+      req.body.user = user;
       next();
     } catch (err) {
       return res.status(401).json({ message: 'Token must be a valid token' });

@@ -2,8 +2,9 @@ import { Router, Request, Response } from 'express';
 import UserController from './database/controllers/UserController';
 import TeamController from './database/controllers/TeamController';
 import MatchController from './database/controllers/MatchController';
-import Token from './shared/TokenGenerator';
-
+// import Token from './shared/TokenGenerator';
+// import auth from './middlewares/Auth';
+import tokenHelper from './helpers/tokenHelper';
 
 const routers: Router = Router();
 
@@ -11,7 +12,7 @@ const routers: Router = Router();
 const userController = new UserController();
 const teamController = new TeamController();
 const matchController = new MatchController();
-const validate = new Token();
+// const validate = new Token();
 
 routers.post('/login', async (req: Request, res: Response) => { 
   const { code, message } = await userController.login(req, res)
@@ -19,13 +20,17 @@ routers.post('/login', async (req: Request, res: Response) => {
 })
 
 // routers.get('/login/validate', async (req, res) => {
-routers.get('/login/validate', validate.validateToken,  async (_req, res: Response) => {
+routers.get('/login/validate', tokenHelper.auth, async (req: Request, res: Response) => {
   // console.log(res.locals.payload);
-  const { email } = res.locals.payload;
+  // const { email } = res.locals.payload;
+  // const { id } = req.body.user;
+  // console.log('id', id);
+  
   // console.log(email);
-  const { code, message } = await userController.getRole(email);
-  // console.log(message);
-  res.status(code).json(message);
+  // const { code, message } = await userController.getRole(email);
+  // console.log(id);
+  // console.log(`teste`);
+  // res.status(code).json(message);
 });
 
 routers.get('/teams', async (req: Request, res: Response) => { 
@@ -47,7 +52,7 @@ routers.get('/matches', async (req: Request, res: Response) => {
   res.status(code).json(message)
 });
 
-routers.post('/matches', validate.validateToken,  async (req: Request, res: Response) => {
+routers.post('/matches', async (req: Request, res: Response) => {
   const { code, message } = await matchController.createMatch(req.body);
   console.log(message);
   
@@ -61,7 +66,7 @@ routers.patch('/matches/:id/finish',  async (req: Request, res: Response) => {
   res.status(code).json(message)
 });
 
-routers.patch('/matches/:id', validate.validateToken, async (req: Request, res: Response) => {
+routers.patch('/matches/:id',  async (req: Request, res: Response) => {
   const { id } = req.params;
   const { homeTeamGoals, awayTeamGoals } = req.body;
   const { code, message } = await matchController.updateMatch(id, homeTeamGoals, awayTeamGoals);

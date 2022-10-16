@@ -92,7 +92,8 @@ class MatchService {
     // console.log('awayTeam', awayTeam);
     
     if (homeTeam === awayTeam) {
-      return { code: 401, message: 'It is not possible to create a match with two equal teams' };
+      // return { code: 401, message: 'It is not possible to create a match with two equal teams' };
+      return { code: 401, message: { message: 'It is not possible to create a match with two equal teams' }};
     }
 
     const hasTeams = await this._matches.findAll({
@@ -100,7 +101,8 @@ class MatchService {
     });
 
     if (hasTeams.length !== 2) {
-      return { code: 404, message: 'There is no team with such id!' };
+      // return { code: 404, message: 'There is no team with such id!' };
+      return{ code: 404, message: { message: 'There is no team with such id!' } };
     }
 
     const response = await this._matches.create(body);

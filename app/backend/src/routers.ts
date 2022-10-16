@@ -61,14 +61,16 @@ routers.post('/matches', tokenHelper.auth, async (req: Request, res: Response) =
   res.status(code).json({message})
 });
 
-routers.patch('/matches/:id/finish', tokenHelper.auth,  async (req: Request, res: Response) => {
+// routers.patch('/matches/:id/finish', tokenHelper.auth,  async (req: Request, res: Response) => {
+routers.patch('/matches/:id/finish', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { code, message } = await matchController.finishMatch(id); 
   // console.log("message", message);
   res.status(code).json(message)
 });
 
-routers.patch('/matches/:id', tokenHelper.auth, async (req: Request, res: Response) => {
+// routers.patch('/matches/:id', tokenHelper.auth, async (req: Request, res: Response) => {
+routers.patch('/matches/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { homeTeamGoals, awayTeamGoals } = req.body;
   const { code, message } = await matchController.updateMatch(id, homeTeamGoals, awayTeamGoals);

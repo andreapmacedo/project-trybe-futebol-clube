@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import UserController from './database/controllers/UserController';
 import TeamController from './database/controllers/TeamController';
 import MatchController from './database/controllers/MatchController';
+import LeaderBoardController from './database/controllers/LeaderBoardController';
 // import authenticationMiddleware from './middlewares/auth.middleware';
 // import Token from './shared/TokenGenerator';
 // import auth from './middlewares/Auth';
@@ -13,6 +14,7 @@ const routers: Router = Router();
 const userController = new UserController();
 const teamController = new TeamController();
 const matchController = new MatchController();
+const leaderBoardController = new LeaderBoardController();
 // const validate = new Token();
 
 routers.post('/login', async (req: Request, res: Response) => { 
@@ -56,12 +58,11 @@ routers.get('/matches', async (req: Request, res: Response) => {
 
 routers.post('/matches', tokenHelper.auth, async (req: Request, res: Response) => {
   const { code, message } = await matchController.createMatch(req.body);
-  console.log(message);
-  
+  // console.log(message);
   res.status(code).json(message)
 });
 
-// routers.patch('/matches/:id/finish', tokenHelper.auth,  async (req: Request, res: Response) => {
+
 routers.patch('/matches/:id/finish', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { code, message } = await matchController.finishMatch(id); 
@@ -69,12 +70,24 @@ routers.patch('/matches/:id/finish', async (req: Request, res: Response) => {
   res.status(code).json(message)
 });
 
-// routers.patch('/matches/:id', tokenHelper.auth, async (req: Request, res: Response) => {
+
 routers.patch('/matches/:id', async (req: Request, res: Response) => {
   const { id } = req.params;
   const { homeTeamGoals, awayTeamGoals } = req.body;
   const { code, message } = await matchController.updateMatch(id, homeTeamGoals, awayTeamGoals);
-  console.log("message", message);
+  // console.log("message", message);
+  res.status(code).json(message)
+});
+
+routers.get('/leaderboard/home', async (req: Request, res: Response) => {
+  const { code, message } = await leaderBoardController.leadBoardHome();
+  // console.log("message", message);
+  res.status(code).json(message)
+});
+
+routers.get('/leaderboard/away', async (req: Request, res: Response) => {
+  const { code, message } = await leaderBoardController.leadBoardAway();
+  // console.log("message", message);
   res.status(code).json(message)
 });
 
